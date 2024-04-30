@@ -384,8 +384,8 @@ def catproducto(request, catproducto):
     return render(request, "categoriaproducto.html", {'productos': productos, 'cat': cat})
 
 def send_user_data_email(user_data):
-    subject = 'Nuevo usuario registrado de amorxeldeporte'
-    message = f'Nuevo Usuario:\n\n{user_data}'
+    subject = 'Impulsocial Consulta'
+    message = f'{user_data}'
     
 
     from_email = 'notificaciondepaginaweb@gmail.com'
@@ -412,7 +412,7 @@ def save_formulario(request):
     
     
     
-    return render(request, 'home.html')
+    return render(request, 'formularioconfirmacion.html')
 
 
 def banner1 (request):
