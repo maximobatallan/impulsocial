@@ -1853,7 +1853,7 @@ ul.search-cart-area {
 ---------------------------*/
 
 .faq-section {
-    padding: 120px 0px;
+    padding-top: 120px 
 }
 
 .faq-section h2.subtitle::after {
@@ -4056,7 +4056,7 @@ ul.overview-points li::before {
 ---------------------------*/
 
 .gallery-section {
-    padding: 120px 0px;
+    padding-top: 120px;
 }
 
 .single-pic img {
