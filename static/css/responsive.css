@@ -337,7 +337,7 @@
         border: none;
     }
     .quote-bg {
-        background-image: url('../img/formulario1.png');
+        background-image: url('../img/formulario1.avif');
      
         background-size: 100% 100%;
         background-position: center center; /* Alinea la imagen en el centro del marco */
@@ -346,7 +346,7 @@
 
 
     .services-breadcrumb-bg {
-        background-image: url('../img/fondocelular1.png');
+        background-image: url('../img/fondocelular1.avif');
         padding: 12px 0px 220px;
         background-size: 100% 100%;
         background-position: center center; /* Alinea la imagen en el centro del marco */

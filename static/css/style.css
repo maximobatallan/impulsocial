@@ -2029,7 +2029,7 @@ ul.search-cart-area {
 }
 
 .quote-bg {
-    background-image: url('../img/formulario.png');
+    background-image: url('../img/formulario.avif');
      
         background-size: 100% 100%;
         background-position: center center; /* Alinea la imagen en el centro del marco */
@@ -2132,7 +2132,7 @@ ul.search-cart-area {
 }
 
 .cta-bg {
-    background-image: url('../img/banner!.PNG');
+    background-image: url('../img/banner!.avif');
     background-size: cover;
 }
 
@@ -2372,7 +2372,7 @@ footer .bottom-footer {
 
 .hero-bg-2 {
     
-    background-image: url('../img/fondo.png');
+    background-image: url('../img/fondo.avif');
     background-size: cover;
 }
 
@@ -2607,7 +2607,7 @@ footer .bottom-footer {
 }
 
 .hero-bg-3 {
-    background-image: url('../img/banner-AXD3.png');
+    background-image: url('../img/banner-AXD3.avif');
     background-size: cover;
 }
 
@@ -3327,7 +3327,7 @@ footer .bottom-footer {
 ---------------------------*/
 
 .services-breadcrumb-bg {
-    background-image: url('../img/fondo.png');
+    background-image: url('../img/fondo.avif');
     background-size: 100% 100%;
     background-position: center center; /* Alinea la imagen en el centro del marco */
     background-repeat: no-repeat; /* Evita la repetición de la imagen de fondo */
