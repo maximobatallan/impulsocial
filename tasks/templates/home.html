@@ -44,7 +44,7 @@
                   
           
                
-                 <a class="wow fadeInUp boxed-btn" data-wow-duration="1.5s" href="#"><span>Paquetes de Oferta</span></a> 
+                 <a class="wow fadeInUp boxed-btn" data-wow-duration="1.5s" href="#galeria"><span>Paquetes de Oferta</span></a> 
 
                </div>   
             </div>
@@ -58,15 +58,11 @@
 </div>
 <!--  breadcrumb end  -->
 {% include "banner.html" %}
-{% include "quienessomos.html" %}
+
 {% include "QA.html" %}
-
-
-{% include "consulta.html" %}
-
 <!--    Gallery section start   -->
 
-<div class="gallery-section blog-grid">
+<div id="galeria" class="gallery-section blog-grid">
    <div class="container">
 
       {% for key, value_list in categorias_productos.items %}
@@ -133,7 +129,11 @@
    </div>
 </div>
 
+{% include "quienessomos.html" %}
 
+
+
+{% include "consulta.html" %}
 
 {% include "footer.html" %}
 <script src="{% static 'js/popper.min.js' %}"></script>
