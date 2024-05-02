@@ -14,7 +14,7 @@ from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 import requests
-
+import os
 
 
 def home(request):
