@@ -2126,13 +2126,14 @@ ul.search-cart-area {
 ---------------------------*/
 
 .cta-section {
-    padding: 70px 0px;
-    color: #fff;
+   
+    padding-bottom: 10px;
+    color: #000000;
     position: relative;
 }
 
 .cta-bg {
-    background-image: url('../img/banner!.avif');
+  
     background-size: cover;
 }
 
@@ -2607,7 +2608,7 @@ footer .bottom-footer {
 }
 
 .hero-bg-3 {
-    background-image: url('../img/banner-AXD3.avif');
+   
     background-size: cover;
 }
 
