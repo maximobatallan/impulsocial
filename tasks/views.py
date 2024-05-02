@@ -608,8 +608,8 @@ def pedido (request):
     
     print(os.environ.get('growkey')
     
-    user_data = f"{request.session['carrito'].items()}, Datos Mercadolibre {params_list}"
-    nuevacompra(user_data)
+
+    nuevacompra(request.session['carrito'].items())
     
     carrito = Carrito(request)
     carrito.limpiar()
