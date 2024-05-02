@@ -609,11 +609,7 @@ def pedido (request):
     print(os.environ.get('growkey')
     
 
- 
-    
-    carrito = Carrito(request)
-    carrito.limpiar()
-   
+
     return render(request, "pedido.html", {'producto_id': producto_id, 'cantidad': cantidad, 'productos_para_comprar': productos_para_comprar } )
 
 
