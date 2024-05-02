@@ -609,7 +609,7 @@ def pedido (request):
     print(os.environ.get('growkey')
     
 
-    nuevacompra(request.session['carrito'].items())
+ 
     
     carrito = Carrito(request)
     carrito.limpiar()
