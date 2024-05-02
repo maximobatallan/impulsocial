@@ -20,8 +20,9 @@ import os
 def home(request):
     productos = Producto.objects.filter(important=True)
     cat = Categoria.objects.all()
-    os.environ.get('APK')
-    os.environ.get('growkey')
+    print(os.environ.get('APK'))
+    print(os.environ.get('growkey'))
+    
     
 
     # Creamos un diccionario para agrupar los productos por categoría
