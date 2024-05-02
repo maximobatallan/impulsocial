@@ -11,8 +11,13 @@ class Carrito:
             self.carrito = carrito
 
     def agregar(self, link, producto, cantidad):
-      
+        
+
+        
+
         id = str(producto.id)
+
+        
         if id not in self.carrito.keys():
             self.carrito[id]={
                 "producto_id": producto.id,
@@ -23,6 +28,13 @@ class Carrito:
                 "link": link,
                 "imagen": str(producto.imagen),
                 "precio": producto.precio,
+                "precio2": producto.precio2,
+                "precio3": producto.precio3,
+                "precio4": producto.precio4,
+                "precio5": producto.precio5,
+                
+                
+                
                 "precioanterior": int(producto.precio *1.25),
             }
        
@@ -38,10 +50,46 @@ class Carrito:
                 "link": link,
                 "imagen": str(producto.imagen),
                 "precio": producto.precio,
+                "precio2": producto.precio2,
+                "precio3": producto.precio3,
+                "precio4": producto.precio4,
+                "precio5": producto.precio5,
                 "precioanterior": int(producto.precio *1.25),
             }
-        
-        print(link)
+
+        if cantidad <= 500:
+            
+            
+            self.carrito[id]["precio"] = self.carrito[id]["precio"]
+            
+        elif 500 < cantidad <= 1000:
+            print("1000river")
+            self.carrito[id]["precio"] = self.carrito[id]["precio2"]
+
+
+
+        elif 1000 < cantidad <= 2000:
+            print("2000river")
+
+
+            self.carrito[id]["precio"] = self.carrito[id]["precio3"]
+
+
+
+        elif  2000 < cantidad <= 5000:
+            
+            self.carrito[id]["precio"] = self.carrito[id]["precio4"]
+        else:
+
+            
+            self.carrito[id]["precio"] = self.carrito[id]["precio5"]
+    
+
+ 
+
+
+
+
         self.guardar_carrito()
 
     def guardar_carrito(self):

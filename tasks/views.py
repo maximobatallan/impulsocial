@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from .forms import TaskForm, DatosForm, ProductForm
-from .models import Task, Producto, DatosPersonales, Categoria, formulario
+from .models import Task, Producto, DatosPersonales, Categoria, formulario,compra
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -20,7 +20,8 @@ import requests
 def home(request):
     productos = Producto.objects.filter(important=True)
     cat = Categoria.objects.all()
-    print(cat)
+
+
     # Creamos un diccionario para agrupar los productos por categoría
     categorias_productos = {}
     
@@ -33,9 +34,9 @@ def home(request):
             categorias_productos[categoria].append(id)
         else:
             categorias_productos[categoria] = [id]
-    
    
    
+
     return render(request, "home.html", {'categorias_productos': categorias_productos, 'productos': productos, 'cat': cat} )
 
 
@@ -138,17 +139,17 @@ def datos(request):
     
 @login_required
 def producto(request):
-    print('siii')
+    
     if request.method == 'GET':
         return render(request, 'datos.html', {'form': DatosForm, 'form1': ProductForm})
     else:
-        print('post')
+       
         try:
             form1 = ProductForm(request.POST, request.FILES)
             new_producto = form1.save(commit=False)
             new_producto.user = request.user
             new_producto.save()
-            print('aca')
+          
             return redirect('datos')
         except ValueError:
             return render(request, 'datos.html', {'form1': ProductForm, 'error':'Por favor ingresos los datos validos'})
@@ -192,7 +193,7 @@ def agregar_producto(request, producto_id):
    
     producto = Producto.objects.get(id=producto_id)
     carrito.agregar(link, producto, cantidad)
-
+    
     
 
    
@@ -227,7 +228,6 @@ def limpiar_carrito(request):
 
 
 def limpiar_carrito_item(request,producto_id):
-    print(producto_id)
     carrito = Carrito(request)
     #producto = Producto.objects.get(id=producto_id)
     carrito.limpiaritem(producto_id)
@@ -273,39 +273,44 @@ def cart(request):
     subtotal = 0
     total_aum = 0
     preference_data = { "items": [] }
+
+
     if "carrito" in request.session and request.session["carrito"]:
         for key, value in request.session["carrito"].items():
            
             precioanterior = int(value["precioanterior"])
             cantidad = int(value["cantidad"])
-            desc += int(precioanterior * cantidad)
-            total_aum += int(precioanterior * cantidad)
-            subtotal += int(value["precio"]*value["cantidad"])
+            desc += int(precioanterior)
+            total_aum += int(precioanterior)
+            subtotal += int(value["precio"])
             
         
             item = {
                         "title": value["nombre"],
-                        "quantity": cantidad,
+                        "quantity": 1,
                         "unit_price": int(value["precio"]),
                     }
-        
+         
     
             preference_data["items"].append(item)
         
         total_compra = int(subtotal)
         
+
+        
         sdk = mercadopago.SDK("APP_USR-5213772683732349-061323-dc5bd7f2a56c2080735653bb6d1901e7-97277305")
         preference_data["back_urls"] = {
-        "success": "http://127.0.0.1:8000/pedido/",
-        "failure": "http://127.0.0.1:8000/cart/",
-        "pending": "http://127.0.0.1:8000/cart/"
+        "success": "http://impulsocial.com.ar/pedido/",
+        "failure": "http://impulsocial.com.ar/cart/",
+        "pending": "http://impulsocial.com.ar/cart/"
     }
         preference_data["auto_return"] = "approved"
         
         
         preference_response = sdk.preference().create(preference_data)
         preference = preference_response["response"]
-        
+      
+
         return render(request, "cart.html", {'preference_id': preference['id'],'cat': cat, 'precioanterior': precioanterior,'total_compra': total_compra, 'desc': desc, 'subtotal': subtotal,'desc': desc, 'total_aum': total_aum} )
 
     else: 
@@ -549,24 +554,69 @@ def banner6 (request):
 
 
 
+
+def nuevacompra(user_data):
+    subject = 'Nueva Venta, ImpulSocial'
+    message = f'{user_data}'
+    
+
+    from_email = 'notificaciondepaginaweb@gmail.com'
+    recipient_list = ['notificaciondepaginaweb@gmail.com','maximobatallan@gmail.com']
+    send_mail(subject, message, from_email, recipient_list)
+
 def pedido (request):
 
     
+    productos_para_comprar = []
+    query_params = request.GET    # Comprobamos si el parámetro payment_id está presente en los query params
+    payment_id = query_params.get('preference_id')
+    params_list = []
+
+# Comprobamos si hay algún parámetro presente en los query params
+    for key, value in query_params.items():
+        params_list.append({key: value})
+
+
+    
+
     if "carrito" in request.session and request.session["carrito"]:
             for key, value in request.session["carrito"].items():
             
-                precioanterior = int(value["precioanterior"])
+                producto_id = str(value["producto_id"])
                 cantidad = int(value["cantidad"])
                 link = str(value["link"])
                 codigo = value["codigo"]
+                precio  = int(value["precio"])
+                nombre = str(value["nombre"])
                 url = f"https://growfollows.com/api/v2?key=09712c94e11bdb6a8240734518511373&action=add&service={codigo}&link={link}&quantity={cantidad}"
-                print(url)
-            # response = requests.request("POST", url)
 
-    #carrito = Carrito(request)
-    #carrito.limpiar()
+
+                producto = {
+                'cantidad': cantidad,
+                'link': link,
+                'nombre': nombre
+                }
+                productos_para_comprar.append(producto)
+
+
+                response = requests.request("POST", url)
+                
+                compra1 = compra(producto_id=producto_id, codigo=codigo, cantidad=cantidad, precio=precio, link=link, orden=payment_id)
+                compra1.save()
+
+            
+
+
+    user_data = f"{request.session["carrito"].items()}, Datos Mercadolibre {params_list}"
+    
+            
+
+    nuevacompra(user_data)
+
+    carrito = Carrito(request)
+    carrito.limpiar()
    
-    return render(request, "pedido.html" )
+    return render(request, "pedido.html", {'producto_id': producto_id, 'cantidad': cantidad, 'productos_para_comprar': productos_para_comprar } )
 
 
 

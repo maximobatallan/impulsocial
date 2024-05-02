@@ -26,6 +26,10 @@ class Producto(models.Model):
     cat = models.CharField(max_length=64)
     descripcion = models.TextField(blank=True)
     precio = models.IntegerField()
+    precio2 = models.IntegerField()
+    precio3 = models.IntegerField()
+    precio4 = models.IntegerField()
+    precio5 = models.IntegerField()
     imagen = models.ImageField(upload_to='products/', null=True, blank=True)
     imagen1 = models.ImageField(upload_to='products/', null=True, blank=True)
     imagen2 = models.ImageField(upload_to='products/', null=True, blank=True)
@@ -51,8 +55,16 @@ class DatosPersonales(models.Model):
     
 class formulario(models.Model):
     id = models.AutoField(primary_key=True)
-    categoria = models.CharField(max_length=55)
     nombre = models.CharField(max_length=55)
     telefono = models.CharField(max_length=55)
     mail = models.EmailField(max_length=55)
     texto = models.CharField(max_length=255)
+
+class compra(models.Model):
+    id = models.AutoField(primary_key=True)
+    producto_id = models.CharField(max_length=55)
+    codigo = models.CharField(max_length=55)
+    cantidad = models.IntegerField()
+    precio = models.IntegerField()
+    link = models.CharField(max_length=255)
+    orden = models.CharField(max_length=255)
