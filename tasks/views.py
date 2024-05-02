@@ -298,7 +298,7 @@ def cart(request):
         os.environ.get('PGDATABASE')
 
         
-        sdk = mercadopago.SDK(os.environ.get('EMAIL_HOST_USER'))
+        sdk = mercadopago.SDK(os.environ.get('APK'))
         preference_data["back_urls"] = {
         "success": "http://impulsocial.com.ar/pedido/",
         "failure": "http://impulsocial.com.ar/cart/",
