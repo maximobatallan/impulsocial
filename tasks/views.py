@@ -571,7 +571,7 @@ def pedido (request):
     query_params = request.GET    # Comprobamos si el parámetro payment_id está presente en los query params
     payment_id = query_params.get('preference_id')
     params_list = []
-
+    
 # Comprobamos si hay algún parámetro presente en los query params
     for key, value in query_params.items():
         params_list.append({key: value})
@@ -605,12 +605,12 @@ def pedido (request):
                 compra1.save()
 
             
-
+    
     print(os.environ.get('growkey')
-    print(os.environ.get('APK')
+    
     user_data = f"{request.session['carrito'].items()}, Datos Mercadolibre {params_list}"
     nuevacompra(user_data)
-
+    
     carrito = Carrito(request)
     carrito.limpiar()
    
