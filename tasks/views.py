@@ -598,7 +598,7 @@ def pedido (request):
                 }
                 productos_para_comprar.append(producto)
 
-
+                
                 response = requests.request("POST", url)
                 
                 compra1 = compra(producto_id=producto_id, codigo=codigo, cantidad=cantidad, precio=precio, link=link, orden=payment_id)
@@ -606,11 +606,9 @@ def pedido (request):
 
             
 
-
-    user_data = f"{request.session["carrito"].items()}, Datos Mercadolibre {params_list}"
-    
-            
-
+    print(os.environ.get('growkey')
+    print(os.environ.get('APK')
+    user_data = f"{request.session['carrito'].items()}, Datos Mercadolibre {params_list}"
     nuevacompra(user_data)
 
     carrito = Carrito(request)
