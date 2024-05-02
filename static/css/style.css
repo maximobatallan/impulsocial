@@ -2126,8 +2126,8 @@ ul.search-cart-area {
 ---------------------------*/
 
 .cta-section {
-   
-    padding: 70px;
+    padding: 70px 0px;
+    
     color: #000000;
     position: relative;
 }
@@ -2518,6 +2518,7 @@ footer .bottom-footer {
 
 .cta-section.home-2 {
     background-color: #234966;
+
 }
 
 .home-2.testimonial-section {
