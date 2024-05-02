@@ -73,7 +73,7 @@
          {% for value in value_list %}
          {% for producto in productos %}
          {% if producto.id == value %}
-         <div class="col-lg-4 col-md-6" style="padding-bottom: 22px;">
+         <div class="col-lg-4 col-md-6" style="padding-bottom: 110px;">
             <div class="single-pic wow fadeInRight" data-wow-duration="1.5s">
                <a href="{% url 'PD' value %}">
                   <img src="https://imgec.s3.sa-east-1.amazonaws.com/{{ producto.imagen }}" alt="{{ producto.nombre }}"
