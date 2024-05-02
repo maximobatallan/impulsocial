@@ -20,8 +20,7 @@ import os
 def home(request):
     productos = Producto.objects.filter(important=True)
     cat = Categoria.objects.all()
-    print(os.environ.get('APK'))
-    print(os.environ.get('growkey'))
+
     
     
 
@@ -299,9 +298,9 @@ def cart(request):
         
         total_compra = int(subtotal)
         
-
+        mpkey = os.environ.get('APK')
         
-        sdk = mercadopago.SDK("APP_USR-5213772683732349-061323-dc5bd7f2a56c2080735653bb6d1901e7-97277305")
+        sdk = mercadopago.SDK(mpkey)
         preference_data["back_urls"] = {
         "success": "http://impulsocial.com.ar/pedido/",
         "failure": "http://impulsocial.com.ar/cart/",
@@ -574,7 +573,7 @@ def pedido (request):
     query_params = request.GET    # Comprobamos si el parámetro payment_id está presente en los query params
     payment_id = query_params.get('preference_id')
     params_list = []
-
+    growkey = os.environ.get('growkey')
 # Comprobamos si hay algún parámetro presente en los query params
     for key, value in query_params.items():
         params_list.append({key: value})
@@ -593,7 +592,7 @@ def pedido (request):
                 nombre = str(value["nombre"])
 
    
-                url = f"https://growfollows.com/api/v2?key=09712c94e11bdb6a8240734518511373&action=add&service={codigo}&link={link}&quantity={cantidad}"
+                url = f"{growkey}{codigo}&link={link}&quantity={cantidad}"
 
 
                 producto = {
