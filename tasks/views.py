@@ -571,7 +571,7 @@ def pedido (request):
     query_params = request.GET    # Comprobamos si el parámetro payment_id está presente en los query params
     payment_id = query_params.get('preference_id')
     params_list = []
-    
+
 # Comprobamos si hay algún parámetro presente en los query params
     for key, value in query_params.items():
         params_list.append({key: value})
@@ -588,6 +588,8 @@ def pedido (request):
                 codigo = value["codigo"]
                 precio  = int(value["precio"])
                 nombre = str(value["nombre"])
+
+   
                 url = f"https://growfollows.com/api/v2?key=09712c94e11bdb6a8240734518511373&action=add&service={codigo}&link={link}&quantity={cantidad}"
 
 
@@ -598,18 +600,20 @@ def pedido (request):
                 }
                 productos_para_comprar.append(producto)
 
-                
-                response = requests.request("POST", url)
+
+                #response = requests.request("POST", url)
                 
                 compra1 = compra(producto_id=producto_id, codigo=codigo, cantidad=cantidad, precio=precio, link=link, orden=payment_id)
                 compra1.save()
 
-            
-    
-    print(os.environ.get('growkey')
-    
 
+    user_data = f"{request.session['carrito'].items()}, Datos Mercadolibre {params_list}"
+    
+    nuevacompra(user_data)
 
+    carrito = Carrito(request)
+    carrito.limpiar()
+   
     return render(request, "pedido.html", {'producto_id': producto_id, 'cantidad': cantidad, 'productos_para_comprar': productos_para_comprar } )
 
 
