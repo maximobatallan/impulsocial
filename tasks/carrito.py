@@ -24,7 +24,7 @@ class Carrito:
                 "nombre": producto.nombre,
                 "codigo": producto.descripcion,
                 "acumulado": cantidad *producto.precio,
-                "cantidad": cantidad,
+                "cantidad": 50,
                 "link": link,
                 "imagen": str(producto.imagen),
                 "precio": producto.precio,
