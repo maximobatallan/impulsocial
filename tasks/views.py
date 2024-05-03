@@ -303,8 +303,8 @@ def cart(request):
         sdk = mercadopago.SDK(mpkey)
         preference_data["back_urls"] = {
         "success": "http://impulsocial.net/pedido/",
-        "failure": "http://impulsocial.net/cart/",
-        "pending": "http://impulsocial.net/cart/"
+        "failure": "http://impulsocial.net/pedido/",
+        "pending": "http://impulsocial.net/pedido/"
     }
         preference_data["auto_return"] = "approved"
         
