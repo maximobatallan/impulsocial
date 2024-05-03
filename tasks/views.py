@@ -302,9 +302,9 @@ def cart(request):
         
         sdk = mercadopago.SDK(mpkey)
         preference_data["back_urls"] = {
-        "success": "http://impulsocial.com.ar/pedido/",
-        "failure": "http://impulsocial.com.ar/cart/",
-        "pending": "http://impulsocial.com.ar/cart/"
+        "success": "http://impulsocial.net/pedido/",
+        "failure": "http://impulsocial.net/cart/",
+        "pending": "http://impulsocial.net/cart/"
     }
         preference_data["auto_return"] = "approved"
         
@@ -568,55 +568,76 @@ def nuevacompra(user_data):
 
 def pedido (request):
 
-    
-    productos_para_comprar = []
-    query_params = request.GET    # Comprobamos si el parámetro payment_id está presente en los query params
-    payment_id = query_params.get('preference_id')
-    params_list = []
-    growkey = os.environ.get('growkey')
-# Comprobamos si hay algún parámetro presente en los query params
-    for key, value in query_params.items():
-        params_list.append({key: value})
+    try:
+        productos_para_comprar = []
+        query_params = request.GET    # Comprobamos si el parámetro payment_id está presente en los query params
+        payment_id = query_params.get('preference_id')
+        params_list = []
+
+    # Comprobamos si hay algún parámetro presente en los query params
+        for key, value in query_params.items():
+            params_list.append({key: value})
 
 
-    
+        
 
-    if "carrito" in request.session and request.session["carrito"]:
-            for key, value in request.session["carrito"].items():
-            
-                producto_id = str(value["producto_id"])
-                cantidad = int(value["cantidad"])
-                link = str(value["link"])
-                codigo = value["codigo"]
-                precio  = int(value["precio"])
-                nombre = str(value["nombre"])
-
-   
-                url = f"{growkey}{codigo}&link={link}&quantity={cantidad}"
-
-
-                producto = {
-                'cantidad': cantidad,
-                'link': link,
-                'nombre': nombre
-                }
-                productos_para_comprar.append(producto)
-
-
-                #response = requests.request("POST", url)
+        if "carrito" in request.session and request.session["carrito"]:
+                for key, value in request.session["carrito"].items():
                 
-                compra1 = compra(producto_id=producto_id, codigo=codigo, cantidad=cantidad, precio=precio, link=link, orden=payment_id)
-                compra1.save()
+                    producto_id = str(value["producto_id"])
+                    cantidad = int(value["cantidad"])
+                    link = str(value["link"])
+                    codigo = value["codigo"]
+                    precio  = int(value["precio"])
+                    nombre = str(value["nombre"])
 
-
-    user_data = f"{request.session['carrito'].items()}, Datos Mercadolibre {params_list}"
     
-    nuevacompra(user_data)
-    print(os.environ.get('APK'))
-    carrito = Carrito(request)
-    carrito.limpiar()
+                    url = f"https://growfollows.com/api/v2?key=09712c94e11bdb6a8240734518511373&action=add&service={codigo}&link={link}&quantity={cantidad}"
+
+
+                    producto = {
+                    'cantidad': cantidad,
+                    'link': link,
+                    'nombre': nombre
+                    }
+                    productos_para_comprar.append(producto)
+
+
+                    #response = requests.request("POST", url)
+                    
+                    compra1 = compra(producto_id=producto_id, codigo=codigo, cantidad=cantidad, precio=precio, link=link, orden=payment_id)
+                    compra1.save()
+
+
+        user_data = f"{request.session['carrito'].items()}, Datos Mercadolibre {params_list}"
+        
+        nuevacompra(user_data)
+
+        carrito = Carrito(request)
+        carrito.limpiar()
    
-    return render(request, "pedido.html", {'producto_id': producto_id, 'cantidad': cantidad, 'productos_para_comprar': productos_para_comprar } )
+        return render(request, "pedido.html", {'producto_id': producto_id, 'cantidad': cantidad, 'productos_para_comprar': productos_para_comprar } )
+    except:
+        productos = Producto.objects.filter(important=True)
+        cat = Categoria.objects.all()
+
+
+        # Creamos un diccionario para agrupar los productos por categoría
+        categorias_productos = {}
+        
+        for producto in productos:
+            id = producto.id
+            categoria = producto.cat
+        
+
+            if categoria in categorias_productos:
+                categorias_productos[categoria].append(id)
+            else:
+                categorias_productos[categoria] = [id]
+    
+   
+
+        return render(request, "home.html", {'categorias_productos': categorias_productos, 'productos': productos, 'cat': cat} )
 
 
 
