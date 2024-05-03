@@ -290,7 +290,8 @@ def cart(request):
             item = {
                         "title": value["nombre"],
                         "quantity": 1,
-                        "unit_price": int(value["precio"]),
+                        #"unit_price": int(value["precio"]),
+                        "unit_price": 10,
                     }
          
     
@@ -303,8 +304,8 @@ def cart(request):
         sdk = mercadopago.SDK(mpkey)
         preference_data["back_urls"] = {
         "success": "http://impulsocial.net/pedido/",
-        "failure": "http://impulsocial.net/pedido/",
-        "pending": "http://impulsocial.net/pedido/"
+        "failure": "http://impulsocial.net/cart/",
+        "pending": "http://impulsocial.net/cart/"
     }
         preference_data["auto_return"] = "approved"
         
@@ -603,7 +604,7 @@ def pedido (request):
                     productos_para_comprar.append(producto)
 
 
-                    #response = requests.request("POST", url)
+                    response = requests.request("POST", url)
                     
                     compra1 = compra(producto_id=producto_id, codigo=codigo, cantidad=cantidad, precio=precio, link=link, orden=payment_id)
                     compra1.save()
