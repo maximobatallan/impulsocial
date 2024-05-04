@@ -289,8 +289,8 @@ def cart(request):
         
             item = {
                         "title": value["nombre"],
-                        "quantity": 1,
-                        #"unit_price": int(value["precio"]),
+                        "quantity": cantidad,
+                        "unit_price": int(value["precio"]),
                         "unit_price": 10,
                     }
          
