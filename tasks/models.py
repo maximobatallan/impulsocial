@@ -59,6 +59,7 @@ class formulario(models.Model):
     telefono = models.CharField(max_length=55)
     mail = models.EmailField(max_length=55)
     texto = models.CharField(max_length=255)
+    categoria = models.CharField(max_length=255)
 
 class compra(models.Model):
     id = models.AutoField(primary_key=True)
