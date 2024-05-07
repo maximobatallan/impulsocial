@@ -210,7 +210,19 @@
       </div>
       <!--  Cart Cards Area End  -->  
       
-      
+      {% if nombrecupon != 1 %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var nombrecupon = "{{ nombrecupon }}";
+                if (typeof nombrecupon === 'string') {
+                    var detallecompraElement = document.getElementById('detallecompra');
+                    if (detallecompraElement) {
+                        detallecompraElement.scrollIntoView();
+                    }
+                }
+            });
+        </script>
+    {% endif %}
       
       <script src="https://sdk.mercadopago.com/js/v2"></script>
 
