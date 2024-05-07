@@ -336,9 +336,9 @@ def cart(request):
         
         sdk = mercadopago.SDK("APP_USR-5213772683732349-061323-dc5bd7f2a56c2080735653bb6d1901e7-97277305")
         preference_data["back_urls"] = {
-        "success": "127.0.0.1:8000/pedido/",
-        "failure": "127.0.0.1:8000/cart/",
-        "pending": "127.0.0.1:8000/cart/"
+        "success": "https://impulsocial.net/pedido/",
+        "failure": "https://impulsocial.net/cart/",
+        "pending": "https://impulsocial.net/cart/"
     }
         preference_data["auto_return"] = "approved"
         
