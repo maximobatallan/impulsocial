@@ -279,7 +279,7 @@ def cart(request):
 
     if request.method == 'POST':
         nombre_cupon = request.POST.get('cupon_nombre')
-        
+        nombre_cupon = nombre_cupon.lower()
         try:
             cupon_obj = cupon.objects.get(nombre=nombre_cupon)
         
