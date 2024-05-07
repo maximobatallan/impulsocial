@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from .forms import TaskForm, DatosForm, ProductForm
-from .models import Task, Producto, DatosPersonales, Categoria, formulario,compra
+from .models import Task, Producto, DatosPersonales, Categoria, formulario,compra, cupon
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -14,15 +14,13 @@ from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 import requests
-import os
+
 
 
 def home(request):
     productos = Producto.objects.filter(important=True)
     cat = Categoria.objects.all()
 
-    
-    
 
     # Creamos un diccionario para agrupar los productos por categoría
     categorias_productos = {}
@@ -275,36 +273,72 @@ def cart(request):
     subtotal = 0
     total_aum = 0
     preference_data = { "items": [] }
+    cupon_no_encontrado = False
+    cupon_encontrado = False
+    descuento= 1
+
+    if request.method == 'POST':
+        nombre_cupon = request.POST.get('cupon_nombre')
+        
+        try:
+            cupon_obj = cupon.objects.get(nombre=nombre_cupon)
+        
+            cupon_obj.contador += 1
+            cupon_obj.save()  # Guardar el cupon_obj con el contador actualizado
+
+            descuento = cupon_obj.descuento
+            cupon_no_encontrado = False
+            cupon_encontrado = True
+        except cupon.DoesNotExist:
+            cupon_no_encontrado = True
+            cupon_encontrado = False
 
 
+    else:
+        pass
     if "carrito" in request.session and request.session["carrito"]:
         for key, value in request.session["carrito"].items():
            
             precioanterior = int(value["precioanterior"])
-            cantidad = int(value["cantidad"])
-            desc += int(precioanterior)
+          
+           
             total_aum += int(precioanterior)
             subtotal += int(value["precio"])
             
         
+        if cupon_encontrado == True:
+
             item = {
                         "title": value["nombre"],
                         "quantity": 1,
-                        "unit_price": int(value["precio"]),
+                        "unit_price": subtotal-(subtotal*descuento/100),
                     }
          
-    
+ 
             preference_data["items"].append(item)
         
-        total_compra = int(subtotal)
         
-        mpkey = os.environ.get('APK')
+            total_compra = subtotal-(subtotal*descuento/100)
+         
+        else:
+            item = {
+                        "title": value["nombre"],
+                        "quantity": 1,
+                        "unit_price": subtotal,
+                    }
+         
+ 
+            preference_data["items"].append(item)
         
-        sdk = mercadopago.SDK(mpkey)
+            total_compra = int(subtotal)
+        
+        
+        
+        sdk = mercadopago.SDK("APP_USR-5213772683732349-061323-dc5bd7f2a56c2080735653bb6d1901e7-97277305")
         preference_data["back_urls"] = {
-        "success": "http://impulsocial.net/pedido/",
-        "failure": "http://impulsocial.net/cart/",
-        "pending": "http://impulsocial.net/cart/"
+        "success": "127.0.0.1:8000/pedido/",
+        "failure": "127.0.0.1:8000/cart/",
+        "pending": "127.0.0.1:8000/cart/"
     }
         preference_data["auto_return"] = "approved"
         
@@ -313,11 +347,13 @@ def cart(request):
         preference = preference_response["response"]
       
 
-        return render(request, "cart.html", {'preference_id': preference['id'],'cat': cat, 'precioanterior': precioanterior,'total_compra': total_compra, 'desc': desc, 'subtotal': subtotal,'desc': desc, 'total_aum': total_aum} )
+        return render(request, "cart.html", {'preference_id': preference['id'],'cat': cat, 'precioanterior': precioanterior,'total_compra': total_compra, 'desc': desc, 'subtotal': subtotal,'desc': desc, 'total_aum': total_aum, 'cupon_encontrado': cupon_encontrado, 'cupon_no_encontrado': cupon_no_encontrado, 'descuento': descuento} )
 
     else: 
         
         return redirect("gallery")
+    
+    
     
 '''   
 def cotizar(request):
@@ -574,7 +610,7 @@ def pedido (request):
         payment_id = query_params.get('preference_id')
         params_list = []
 
-    # Comprobamos si hay algún parámetro presente en los query params
+    
         for key, value in query_params.items():
             params_list.append({key: value})
 
@@ -603,7 +639,7 @@ def pedido (request):
                     productos_para_comprar.append(producto)
 
 
-                    response = requests.request("POST", url)
+                    #response = requests.request("POST", url)
                     
                     compra1 = compra(producto_id=producto_id, codigo=codigo, cantidad=cantidad, precio=precio, link=link, orden=payment_id)
                     compra1.save()
@@ -638,6 +674,3 @@ def pedido (request):
    
 
         return render(request, "home.html", {'categorias_productos': categorias_productos, 'productos': productos, 'cat': cat} )
-
-
-

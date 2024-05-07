@@ -61,6 +61,7 @@ class formulario(models.Model):
     texto = models.CharField(max_length=255)
     categoria = models.CharField(max_length=255)
 
+
 class compra(models.Model):
     id = models.AutoField(primary_key=True)
     producto_id = models.CharField(max_length=55)
@@ -69,3 +70,12 @@ class compra(models.Model):
     precio = models.IntegerField()
     link = models.CharField(max_length=255)
     orden = models.CharField(max_length=255)
+
+
+class cupon(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=55)
+    descuento = models.IntegerField()
+    contador = models.IntegerField(default=1)
+
+ 
