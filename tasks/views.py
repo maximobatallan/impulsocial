@@ -276,7 +276,8 @@ def cart(request):
     cupon_no_encontrado = False
     cupon_encontrado = False
     descuento= 1
-
+    nombre_cupon = 1
+    
     if request.method == 'POST':
         nombre_cupon = request.POST.get('cupon_nombre')
         nombre_cupon = nombre_cupon.lower()
