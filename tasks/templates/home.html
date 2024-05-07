@@ -73,7 +73,7 @@
          {% for value in value_list %}
          {% for producto in productos %}
          {% if producto.id == value %}
-         <div class="col-lg-4 col-md-6" style="padding-bottom: 110px;">
+         <div class="col-lg-4 col-md-6" style="padding-bottom: 22px;">
             <div class="single-pic wow fadeInRight" data-wow-duration="1.5s">
                <a href="{% url 'PD' value %}">
                   <img src="https://imgec.s3.sa-east-1.amazonaws.com/{{ producto.imagen }}" alt="{{ producto.nombre }}"
@@ -104,10 +104,10 @@
                        
                             <select name="cantidad" id="cantidad">
                                 
-                                <option value="500">500</option>
-                                <option value="1000" selected>1000</option>
-                                <option value="2000">2000</option>
-                                <option value="5000">5000</option>
+                                <option value="500">Cantidad 500</option>
+                                <option value="1000" selected>Cantidad: 1.000</option>
+                                <option value="2000">Cantidad: 2.000</option>
+                                <option value="5000">Cantidad: 5.000</option>
                             </select>
                         </div>
                         <div class="form-element">

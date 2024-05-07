@@ -24,7 +24,7 @@ class Carrito:
                 "nombre": producto.nombre,
                 "codigo": producto.descripcion,
                 "acumulado": cantidad *producto.precio,
-                "cantidad": 50,
+                "cantidad": cantidad,
                 "link": link,
                 "imagen": str(producto.imagen),
                 "precio": producto.precio,
@@ -63,13 +63,13 @@ class Carrito:
             self.carrito[id]["precio"] = self.carrito[id]["precio"]
             
         elif 500 < cantidad <= 1000:
-            print("1000river")
+          
             self.carrito[id]["precio"] = self.carrito[id]["precio2"]
 
 
 
         elif 1000 < cantidad <= 2000:
-            print("2000river")
+           
 
 
             self.carrito[id]["precio"] = self.carrito[id]["precio3"]
