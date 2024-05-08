@@ -337,7 +337,7 @@ def cart(request):
             total_compra = int(subtotal)
         
         
-        
+        total_compra = round(total_compra, 2)
         sdk = mercadopago.SDK("APP_USR-5213772683732349-061323-dc5bd7f2a56c2080735653bb6d1901e7-97277305")
         preference_data["back_urls"] = {
         "success": "https://impulsocial.net/pedido/",
