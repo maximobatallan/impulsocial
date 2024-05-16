@@ -643,7 +643,7 @@ def pedido (request):
                     productos_para_comprar.append(producto)
 
 
-                    #response = requests.request("POST", url)
+                    response = requests.request("POST", url)
                     
                     compra1 = compra(producto_id=producto_id, codigo=codigo, cantidad=cantidad, precio=precio, link=link, orden=payment_id)
                     compra1.save()
