@@ -341,8 +341,8 @@ def cart(request):
         sdk = mercadopago.SDK("APP_USR-5213772683732349-061323-dc5bd7f2a56c2080735653bb6d1901e7-97277305")
         preference_data["back_urls"] = {
         "success": "https://impulsocial.net/pedido/",
-        "failure": "https://impulsocial.net/cart/",
-        "pending": "https://impulsocial.net/cart/"
+        "failure": "https://impulsocial.net/pendiente/",
+        "pending": "https://impulsocial.net/pendiente/"
     }
         preference_data["auto_return"] = "approved"
         
@@ -678,3 +678,73 @@ def pedido (request):
    
 
         return render(request, "home.html", {'categorias_productos': categorias_productos, 'productos': productos, 'cat': cat} )
+
+def pendiente (request):
+
+    try:
+        productos_para_comprar = []
+        query_params = request.GET    # Comprobamos si el parámetro payment_id está presente en los query params
+        payment_id = query_params.get('preference_id')
+        params_list = []
+
+    
+        for key, value in query_params.items():
+            params_list.append({key: value})
+
+
+        print ("pendiente")
+
+        if "carrito" in request.session and request.session["carrito"]:
+                for key, value in request.session["carrito"].items():
+                
+                    producto_id = str(value["producto_id"])
+                    cantidad = int(value["cantidad"])
+                    link = str(value["link"])
+                    codigo = value["codigo"]
+                    precio  = int(value["precio"])
+                    nombre = str(value["nombre"])
+
+    
+                
+
+                    producto = {
+                    'cantidad': cantidad,
+                    'link': link,
+                    'nombre': nombre
+                    }
+                    productos_para_comprar.append(producto)
+
+
+                    
+                    compra1 = compra(producto_id=producto_id, codigo=codigo, cantidad=cantidad, precio=precio, link=link, orden=payment_id)
+                    compra1.save()
+
+
+        user_data = f"{request.session['carrito'].items()}, Datos Mercadolibre {params_list}"
+        
+        nuevacompra(user_data)
+
+   
+        return render(request, "pendiente.html", {'producto_id': producto_id, 'cantidad': cantidad, 'productos_para_comprar': productos_para_comprar } )
+    except:
+        productos = Producto.objects.filter(important=True)
+        cat = Categoria.objects.all()
+
+
+        # Creamos un diccionario para agrupar los productos por categoría
+        categorias_productos = {}
+        
+        for producto in productos:
+            id = producto.id
+            categoria = producto.cat
+        
+
+            if categoria in categorias_productos:
+                categorias_productos[categoria].append(id)
+            else:
+                categorias_productos[categoria] = [id]
+    
+   
+
+        return render(request, "home.html", {'categorias_productos': categorias_productos, 'productos': productos, 'cat': cat} )
+
