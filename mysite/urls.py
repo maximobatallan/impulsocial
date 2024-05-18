@@ -55,7 +55,7 @@ urlpatterns = [
     path('youtube/', views.banner6, name='youtube'),
     path('pedido/', views.pedido, name='pedido'),
     path('formularioconfirmacion/', views.save_formulario, name='formularioconfirmacion'),
-
+    path('pendiente/', views.pendiente, name='pendiente'),
     ]
 
 if settings.DEBUG:
